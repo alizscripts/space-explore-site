@@ -31,3 +31,7 @@ The project will be available locally at the address shown in the terminal.
 ## Status
 
 This project is actively being developed. New features, improvements, and optimizations will be added over time.
+
+## 🚀 Live Demo
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://alizscripts.github.io/space-explore-site/)
