@@ -1,4 +1,4 @@
-````markdown
+
 # 🌌 Space Explore
 
 An immersive interactive space exploration website built with React, TypeScript, and Three.js.
@@ -64,6 +64,3 @@ Built to explore React, Three.js, WebGL, animation, responsive design, and moder
 ---
 
 ⭐ If you like the project, feel free to explore the code or use it as inspiration.
-
-```
-```
