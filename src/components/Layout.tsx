@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Rocket, Orbit, Sparkles, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Rocket, Orbit, Sparkles, Menu, X, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import MouseTrail from './MouseTrail';
@@ -7,15 +7,31 @@ import MouseTrail from './MouseTrail';
 export default function Layout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on page navigation
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail.trim()) {
+      setIsSubscribed(true);
+      setNewsletterEmail('');
+      setTimeout(() => setIsSubscribed(false), 4000);
+    }
+  };
 
   const navLinks = [
     { path: '/', label: 'مقدمه', icon: Rocket },
@@ -39,7 +55,7 @@ export default function Layout() {
         <div className={`pointer-events-auto flex items-center justify-between bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-6 py-3 w-full max-w-4xl transition-all duration-500 shadow-2xl ${scrolled ? 'border-white/20 bg-black/80' : ''}`}>
           
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group" aria-label="صفحه اصلی شگفتی‌های فضا">
             <div className="bg-white/10 p-2 rounded-full group-hover:bg-white group-hover:text-black transition-colors">
               <Rocket className="w-4 h-4" />
             </div>
@@ -47,7 +63,7 @@ export default function Layout() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1" aria-label="ناوبری اصلی">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -76,8 +92,11 @@ export default function Layout() {
 
           {/* Mobile Menu Button */}
           <button 
+            type="button"
             className="md:hidden p-2 text-zinc-400 hover:text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'بستن منو' : 'باز کردن منو'}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -145,10 +164,10 @@ export default function Layout() {
                 بخش‌های سایت
               </h4>
               <ul className="space-y-3">
-                {navLinks.map(link => (
+                {navLinks.map((link) => (
                   <li key={link.path}>
                     <Link to={link.path} className="text-zinc-400 hover:text-white transition-colors text-sm flex items-center gap-2 group">
-                      <span className="group-hover:translate-x-1 transition-transform">{link.label}</span>
+                      <span className="group-hover:-translate-x-1 transition-transform">{link.label}</span>
                       <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
                   </li>
@@ -164,16 +183,30 @@ export default function Layout() {
               <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-light">
                 برای دریافت آخرین تصاویر و کشفیات نجومی عضو شوید.
               </p>
-              <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="ایمیل شما..." 
-                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-white/30 w-full transition-colors"
-                />
-                <button type="submit" className="bg-white text-black px-4 py-2 rounded-xl text-sm font-bold hover:bg-zinc-200 transition-colors">
-                  ثبت
-                </button>
-              </form>
+              {isSubscribed ? (
+                <div className="flex items-center gap-2 text-emerald-400 text-sm bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
+                  <span>ایمیل شما با موفقیت در خبرنامه ثبت شد!</span>
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+                  <input 
+                    type="email" 
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="ایمیل شما..." 
+                    aria-label="آدرس ایمیل برای خبرنامه"
+                    required
+                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-white/30 w-full transition-colors"
+                  />
+                  <button 
+                    type="submit" 
+                    className="bg-white text-black px-4 py-2 rounded-xl text-sm font-bold hover:bg-zinc-200 transition-colors flex-shrink-0"
+                  >
+                    ثبت
+                  </button>
+                </form>
+              )}
             </div>
           </div>
           

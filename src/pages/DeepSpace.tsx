@@ -13,21 +13,23 @@ interface SpaceVisualProps {
 
 const SpaceVisual = ({ src, alt, isEven }: SpaceVisualProps) => {
   return (
-    <div style={{ perspective: 2000 }} className="w-full aspect-square md:aspect-[4/3] flex-shrink-0">
+    <div style={{ perspective: 1600 }} className="w-full aspect-square md:aspect-[4/3] flex-shrink-0">
       <div 
         style={{ 
-          transform: `rotateX(10deg) rotateY(${isEven ? '15deg' : '-15deg'})`, 
-          transformStyle: "preserve-3d" 
+          transform: `rotateX(8deg) rotateY(${isEven ? '10deg' : '-10deg'})`, 
+          transformStyle: 'preserve-3d' 
         }} 
-        className="w-full h-full relative group"
+        className="w-full h-full relative group transition-transform duration-500 hover:scale-[1.02]"
       >
         <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900 relative">
           <img
             src={src}
             alt={alt}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
         </div>
       </div>
     </div>
@@ -40,6 +42,10 @@ interface DeepSpaceSection {
   subtitle: string;
   desc: string;
   image: string;
+  stats: {
+    label: string;
+    value: string;
+  }[];
 }
 
 export default function DeepSpace() {
@@ -49,21 +55,36 @@ export default function DeepSpace() {
       title: 'سیاه‌چاله‌ها',
       subtitle: 'هیولاهای گرانشی و افق رویداد',
       desc: 'سیاه‌چاله‌ها مناطقی از فضا-زمان هستند که گرانش در آن‌ها چنان قدرتمند است که هیچ چیز، حتی نور، توان گریز از چنگال آن‌ها را ندارد. این تصویر خیره‌کننده، نخستین تصویر ثبت شده از افق رویداد سیاه‌چاله کلان‌جرم مرکز کهکشان M87 است که با تلسکوپ افق رویداد (EHT) شکار شد.',
-      image: `${BASE}textures/blackhole.jpg`,
+      image: `${BASE}textures/blackhole.webp`,
+      stats: [
+        { label: 'فاصله از زمین', value: '۵۵ میلیون سال نوری' },
+        { label: 'جرم تخمینی', value: '۶.۵ میلیارد برابر خورشید' },
+        { label: 'روش رصد', value: 'شبکه تلسکوپ EHT' },
+      ],
     },
     {
       id: 'nebulae',
       title: 'سحابی‌ها',
       subtitle: 'مهدکودک‌ها و زایشگاه‌های ستاره‌ای',
       desc: 'سحابی‌ها ابرهای عظیمی از غبار، گاز هیدروژن و هلیوم هستند. این تصویر بی‌نظیر (صخره‌های کیهانی در سحابی کارینا) که با تلسکوپ فضایی جیمز وب ثبت شده، زایشگاه‌هایی را نشان می‌دهد که ستارگان جدید در میان امواج متلاطم غبار متولد می‌شوند.',
-      image: `${BASE}textures/nebula.jpg`,
+      image: `${BASE}textures/nebula.webp`,
+      stats: [
+        { label: 'فاصله از زمین', value: '۷,۵۰۰ سال نوری' },
+        { label: 'گستردگی', value: 'بیش از ۳۰۰ سال نوری' },
+        { label: 'تلسکوپ کاشف', value: 'جیمز وب (JWST)' },
+      ],
     },
     {
       id: 'pulsars',
       title: 'تپ‌اخترها',
       subtitle: 'فانوس‌های دریایی چرخان کیهان',
       desc: 'تپ‌اخترها ستاره‌های نوترونی بسیار متراکمی هستند که با سرعت خارق‌العاده‌ای می‌چرخند و طوفانی از ذرات پرانرژی و پرتوهای الکترومغناطیسی را با دقتی شبیه به ساعت‌های اتمی از قطب‌های مغناطیسی خود به بیرون پرتاب می‌کنند.',
-      image: `${BASE}textures/pulsar.jpg`,
+      image: `${BASE}textures/pulsar.webp`,
+      stats: [
+        { label: 'سرعت چرخش', value: 'تا صدها دور در ثانیه' },
+        { label: 'چگالی ماده', value: 'میلیاردها تن در سانتی‌متر مکعب' },
+        { label: 'میدان مغناطیسی', value: 'تریلیون برابر میدان زمین' },
+      ],
     }
   ];
 
@@ -99,7 +120,7 @@ export default function DeepSpace() {
                 transition={{ duration: 0.8 }}
                 className="flex-1 w-full lg:w-[50%]"
               >
-                <SpaceVisual src={section.image} alt={section.title} isEven={isEven} />
+                <SpaceVisual src={section.image} alt={`تصویر نجومی ${section.title} - ${section.subtitle}`} isEven={isEven} />
               </motion.div>
               
               <motion.div 
@@ -116,9 +137,19 @@ export default function DeepSpace() {
                   {section.title}
                 </h2>
                 <div className="w-12 h-1 bg-white/20 rounded-full mx-auto lg:ml-0 lg:mr-auto my-6"></div>
-                <p className="text-base md:text-lg text-zinc-400 leading-relaxed font-light">
+                <p className="text-base md:text-lg text-zinc-400 leading-relaxed font-light mb-6">
                   {section.desc}
                 </p>
+
+                {/* Scientific Stats Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5">
+                  {section.stats.map((stat, sIdx) => (
+                    <div key={sIdx} className="bg-white/5 border border-white/5 rounded-2xl p-4 text-center">
+                      <div className="text-xs text-zinc-500 mb-1">{stat.label}</div>
+                      <div className="text-sm font-bold text-white">{stat.value}</div>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             </div>
           );

@@ -1,9 +1,18 @@
+import { lazy, Suspense } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import SolarSystem from './pages/SolarSystem';
-import DeepSpace from './pages/DeepSpace';
+
+const Home = lazy(() => import('./pages/Home'));
+const SolarSystem = lazy(() => import('./pages/SolarSystem'));
+const DeepSpace = lazy(() => import('./pages/DeepSpace'));
+
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+    <div className="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+    <span className="text-zinc-500 text-sm font-light animate-pulse">در حال بارگذاری...</span>
+  </div>
+);
 
 export default function App() {
   return (
@@ -11,9 +20,30 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="solar-system" element={<SolarSystem />} />
-          <Route path="deep-space" element={<DeepSpace />} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <Home />
+              </Suspense>
+            }
+          />
+          <Route
+            path="solar-system"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <SolarSystem />
+              </Suspense>
+            }
+          />
+          <Route
+            path="deep-space"
+            element={
+              <Suspense fallback={<PageLoader />}>
+                <DeepSpace />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </HashRouter>

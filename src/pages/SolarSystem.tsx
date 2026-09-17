@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
-import React, { useRef, Suspense } from 'react';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import { Sphere, Ring, useTexture } from '@react-three/drei';
@@ -16,9 +16,13 @@ interface TextureSphereProps {
 
 const TextureSphere = ({ textureUrl, isGasGiant, args }: TextureSphereProps) => {
   const texture = useTexture(textureUrl) as THREE.Texture;
-  if (texture && 'colorSpace' in texture) {
-    texture.colorSpace = THREE.SRGBColorSpace;
-  }
+
+  useEffect(() => {
+    if (texture && 'colorSpace' in texture) {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.needsUpdate = true;
+    }
+  }, [texture]);
 
   return (
     <Sphere args={args}>
@@ -117,17 +121,48 @@ const Planet3DModel = ({ planet }: { planet: PlanetData }) => {
 };
 
 const PlanetVisual = ({ planet }: { planet: PlanetData }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 z-10 relative">
-      <Canvas 
-        camera={{ position: [0, 0, 4.5], fov: 45 }} 
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      >
-        <Suspense fallback={null}>
-          <Planet3DModel planet={planet} />
-        </Suspense>
-      </Canvas>
+    <div 
+      ref={containerRef} 
+      className="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 z-10 relative flex items-center justify-center"
+    >
+      {isVisible ? (
+        <Canvas 
+          camera={{ position: [0, 0, 4.5], fov: 45 }} 
+          dpr={[1, 1.5]}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        >
+          <Suspense fallback={null}>
+            <Planet3DModel planet={planet} />
+          </Suspense>
+        </Canvas>
+      ) : (
+        <div 
+          className="w-32 h-32 md:w-44 md:h-44 rounded-full transition-opacity duration-500 opacity-60 animate-pulse"
+          style={{
+            background: `radial-gradient(circle at 35% 35%, ${planet.atmosColor}, ${planet.baseColor} 70%, #000 100%)`,
+            boxShadow: `0 0 35px ${planet.atmosColor}33`,
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -140,7 +175,7 @@ export default function SolarSystem() {
       desc: 'نزدیک‌ترین و کوچک‌ترین سیاره به خورشید. سطحی پر از دهانه‌های برخوردی شبیه به ماه دارد و هیچ اتمسفر پایداری برای حفظ گرما ندارد.',
       baseColor: '#71717a',
       atmosColor: '#a1a1aa',
-      textureMap: `${BASE}textures/mercury.jpg`,
+      textureMap: `${BASE}textures/mercury.webp`,
       stats: { distance: '۵۸ میلیون', year: '۸۸ روز', moons: '۰' },
     },
     {
@@ -149,7 +184,7 @@ export default function SolarSystem() {
       desc: 'با اتمسفری ضخیم از دی‌اکسید کربن که اثر گلخانه‌ای شدیدی ایجاد می‌کند، داغ‌ترین سیاره منظومه شمسی است.',
       baseColor: '#b45309',
       atmosColor: '#fbbf24',
-      textureMap: `${BASE}textures/venus.jpg`,
+      textureMap: `${BASE}textures/venus.webp`,
       stats: { distance: '۱۰۸ میلیون', year: '۲۲۵ روز', moons: '۰' },
     },
     {
@@ -158,7 +193,7 @@ export default function SolarSystem() {
       desc: 'نقطه آبی کمرنگ ما. تنها مکان شناخته شده در جهان که شرایط ایده‌آل (آب مایع و جو مناسب) برای تکامل حیات را داراست.',
       baseColor: '#1d4ed8',
       atmosColor: '#60a5fa',
-      textureMap: `${BASE}textures/earth.jpg`,
+      textureMap: `${BASE}textures/earth.webp`,
       stats: { distance: '۱۵۰ میلیون', year: '۳۶۵.۲ روز', moons: '۱' },
     },
     {
@@ -167,7 +202,7 @@ export default function SolarSystem() {
       desc: 'سیاره‌ای سرد و بیابانی با جوی رقیق. دارای بزرگترین آتشفشان و عمیق‌ترین دره‌های کشف شده در منظومه شمسی.',
       baseColor: '#b91c1c',
       atmosColor: '#f87171',
-      textureMap: `${BASE}textures/mars.jpg`,
+      textureMap: `${BASE}textures/mars.webp`,
       stats: { distance: '۲۲۸ میلیون', year: '۶۸۷ روز', moons: '۲' },
     },
     {
@@ -176,7 +211,7 @@ export default function SolarSystem() {
       desc: 'پادشاه سیارات منظومه شمسی. جرمی بیش از دو برابر تمام سیارات دیگر روی هم دارد و طوفان‌های عظیمی در آن در جریان است.',
       baseColor: '#9a3412',
       atmosColor: '#fcd34d',
-      textureMap: `${BASE}textures/jupiter.jpg`,
+      textureMap: `${BASE}textures/jupiter.webp`,
       stats: { distance: '۷۷۸ میلیون', year: '۱۱.۸ سال', moons: '۹۵' },
     },
     {
@@ -185,7 +220,7 @@ export default function SolarSystem() {
       desc: 'نگین منظومه شمسی که به خاطر حلقه‌های گسترده و درخشانش که از میلیاردها قطعه یخ و سنگ تشکیل شده‌اند، مشهور است.',
       baseColor: '#854d0e',
       atmosColor: '#fde047',
-      textureMap: `${BASE}textures/saturn.jpg`,
+      textureMap: `${BASE}textures/saturn.webp`,
       stats: { distance: '۱.۴ میلیارد', year: '۲۹.۴ سال', moons: '۱۴۶' },
     },
     {
@@ -194,7 +229,7 @@ export default function SolarSystem() {
       desc: 'تنها سیاره‌ای که محور چرخش آن به شدت کج شده و تقریباً روی پهلو به دور خورشید می‌گردد. اتمسفری بسیار سرد دارد.',
       baseColor: '#0e7490',
       atmosColor: '#a5f3fc',
-      textureMap: `${BASE}textures/uranus.jpg`,
+      textureMap: `${BASE}textures/uranus.webp`,
       stats: { distance: '۲.۹ میلیارد', year: '۸۴ سال', moons: '۲۸' },
     },
     {
@@ -203,7 +238,7 @@ export default function SolarSystem() {
       desc: 'دورترین سیاره منظومه شمسی. جهانی تاریک، سرد و با بادهای مافوق صوت که سرعت آن‌ها به ۲۰۰۰ کیلومتر در ساعت می‌رسد.',
       baseColor: '#1e3a8a',
       atmosColor: '#3b82f6',
-      textureMap: `${BASE}textures/neptune.jpg`,
+      textureMap: `${BASE}textures/neptune.webp`,
       stats: { distance: '۴.۵ میلیارد', year: '۱۶۵ سال', moons: '۱۶' },
     }
   ];
