@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # 🌌 Space Explore
 
@@ -11,6 +12,20 @@ Explore the Solar System, discover deep-space objects, and experience a cinemati
 
 ## ✨ Features
 
+=======
+# 🌌 Space Explore
+
+An immersive interactive space exploration website built with React, TypeScript, and Three.js.
+
+Explore the Solar System, discover deep-space objects, and experience a cinematic space-themed interface with interactive 3D planets, animations, and responsive layouts.
+
+## 🚀 Live Demo
+
+[Explore Space Explore](https://alizscripts.github.io/space-explore-site/)
+
+## ✨ Features
+
+>>>>>>> c116580 (fix(ux): remove right-click and devtools blocking anti-pattern)
 - 🪐 Interactive 3D Solar System
 - 🌌 Deep-space exploration
 - ✨ Animated starfield and mouse interactions
@@ -63,4 +78,8 @@ Built to explore React, Three.js, WebGL, animation, responsive design, and moder
 
 ---
 
+<<<<<<< HEAD
 ⭐ If you like the project, feel free to explore the code or use it as inspiration.
+=======
+⭐ If you like the project, feel free to explore the code or use it as inspiration.
+>>>>>>> c116580 (fix(ux): remove right-click and devtools blocking anti-pattern)
