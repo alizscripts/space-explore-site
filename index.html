@@ -1,32 +1,52 @@
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" class="dark bg-black">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>شگفتی‌های فضا | Space Explore</title>
+    
     <meta name="description" content="کاوش تعاملی در منظومه شمسی و شگفتی‌های اعماق کیهان با گرافیک سه‌بعدی و انیمیشن" />
     <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="شگفتی‌های فضا | Space Explore" />
     <meta property="og:description" content="کاوش تعاملی در منظومه شمسی و شگفتی‌های اعماق کیهان با گرافیک سه‌بعدی و انیمیشن" />
     <meta property="og:locale" content="fa_IR" />
+    <meta property="og:image" content="%BASE_URL%textures/earth.webp" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="شگفتی‌های فضا | Space Explore" />
     <meta name="twitter:description" content="کاوش تعاملی در منظومه شمسی و شگفتی‌های اعماق کیهان با گرافیک سه‌بعدی و انیمیشن" />
+    <meta name="twitter:image" content="%BASE_URL%textures/earth.webp" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z'/%3E%3Cpath d='m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z'/%3E%3Cpath d='m9 12 2 2'/%3E%3C/svg%3E" />
+    <link 
+      rel="icon" 
+      type="image/svg+xml" 
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%2309090b' stroke='%233f3f46' stroke-width='1'/%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z'/%3E%3Cpath d='m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z'/%3E%3Cpath d='m9 12 2 2'/%3E%3C/g%3E%3C/svg%3E" 
+    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-black text-white antialiased selection:bg-white selection:text-black">
-    <div id="root"></div>
+  <body class="bg-black text-white antialiased selection:bg-white selection:text-black overflow-x-hidden">
+    <noscript>
+      <div style="padding: 24px; text-align: center; color: #ffffff; font-family: sans-serif; background: #000000;">
+        برای استفاده از این سایت باید جاوااسکریپت مرورگر شما فعال باشد.
+      </div>
+    </noscript>
+
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000000; color: #71717a; font-family: 'Vazirmatn', system-ui, sans-serif;">
+        <div style="width: 40px; height: 40px; border: 2px solid rgba(255,255,255,0.08); border-top-color: #ffffff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px;"></div>
+        <span style="font-size: 13px; font-weight: 300;">در حال بارگذاری...</span>
+        <style>
+          @keyframes spin { to { transform: rotate(360deg); } }
+        </style>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

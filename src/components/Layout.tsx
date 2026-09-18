@@ -1,6 +1,6 @@
+import { useState, useEffect, type FormEvent } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Rocket, Orbit, Sparkles, Menu, X, ArrowUpRight, CheckCircle2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import MouseTrail from './MouseTrail';
 
@@ -19,17 +19,32 @@ export default function Layout() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on page navigation
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (isSubscribed) {
+      const timer = setTimeout(() => setIsSubscribed(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSubscribed]);
+
+  const handleNewsletterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newsletterEmail.trim()) {
       setIsSubscribed(true);
       setNewsletterEmail('');
-      setTimeout(() => setIsSubscribed(false), 4000);
+    }
+  };
+
+  const handlePreload = (path: string) => {
+    if (path === '/solar-system') {
+      import('../pages/SolarSystem');
+    } else if (path === '/deep-space') {
+      import('../pages/DeepSpace');
+    } else if (path === '/') {
+      import('../pages/Home');
     }
   };
 
@@ -40,29 +55,29 @@ export default function Layout() {
   ];
 
   return (
-    <div className="relative min-h-screen flex flex-col font-['Vazirmatn'] bg-black text-white">
-      {/* Background Starfield and Ambient Light */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: -20 }}>
-        <div className="absolute inset-0 stars-bg opacity-70"></div>
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[140px] bg-zinc-800/20"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[140px] bg-zinc-900/30"></div>
+    <div className="relative min-h-screen flex flex-col bg-black text-white selection:bg-white selection:text-black">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-20">
+        <div className="absolute inset-0 stars-bg opacity-70" />
+        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[140px] bg-zinc-800/20" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[140px] bg-zinc-900/30" />
       </div>
       
       <MouseTrail />
 
-      {/* Floating Navbar */}
       <header className="fixed top-0 inset-x-0 z-50 flex justify-center pt-6 px-4 pointer-events-none transition-transform duration-500">
         <div className={`pointer-events-auto flex items-center justify-between bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-6 py-3 w-full max-w-4xl transition-all duration-500 shadow-2xl ${scrolled ? 'border-white/20 bg-black/80' : ''}`}>
-          
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group" aria-label="صفحه اصلی شگفتی‌های فضا">
+          <Link 
+            to="/" 
+            onMouseEnter={() => handlePreload('/')}
+            className="flex items-center gap-3 group" 
+            aria-label="صفحه اصلی شگفتی‌های فضا"
+          >
             <div className="bg-white/10 p-2 rounded-full group-hover:bg-white group-hover:text-black transition-colors">
               <Rocket className="w-4 h-4" />
             </div>
             <span className="font-bold tracking-tight text-lg">شگفتی‌های فضا</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1" aria-label="ناوبری اصلی">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
@@ -70,6 +85,7 @@ export default function Layout() {
                 <Link
                   key={link.path}
                   to={link.path}
+                  onMouseEnter={() => handlePreload(link.path)}
                   className={`relative px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                     isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
                   }`}
@@ -78,7 +94,7 @@ export default function Layout() {
                     <motion.div 
                       layoutId="nav-pill"
                       className="absolute inset-0 bg-white/10 border border-white/15 rounded-full"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
                   <span className="relative z-10 flex items-center gap-2">
@@ -90,7 +106,6 @@ export default function Layout() {
             })}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button 
             type="button"
             className="md:hidden p-2 text-zinc-400 hover:text-white"
@@ -103,7 +118,6 @@ export default function Layout() {
         </div>
       </header>
 
-      {/* Mobile Navigation Dropdown */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -135,14 +149,10 @@ export default function Layout() {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
       <main className="relative z-10 flex-1 w-full pt-28">
-        <AnimatePresence mode="wait">
-          <Outlet />
-        </AnimatePresence>
+        <Outlet />
       </main>
 
-      {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 mt-auto bg-black/40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
@@ -160,7 +170,7 @@ export default function Layout() {
             
             <div>
               <h4 className="text-white font-medium mb-4 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
                 بخش‌های سایت
               </h4>
               <ul className="space-y-3">
@@ -177,7 +187,7 @@ export default function Layout() {
 
             <div>
               <h4 className="text-white font-medium mb-4 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
                 خبرنامه کیهانی
               </h4>
               <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-light">

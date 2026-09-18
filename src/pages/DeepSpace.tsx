@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -21,7 +20,8 @@ const SpaceVisual = ({ src, alt, isEven }: SpaceVisualProps) => {
         }} 
         className="w-full h-full relative group transition-transform duration-500 hover:scale-[1.02]"
       >
-        <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-900 relative">
+        <div className="absolute -inset-2 rounded-3xl bg-white/5 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-zinc-950 relative">
           <img
             src={src}
             alt={alt}
@@ -29,7 +29,7 @@ const SpaceVisual = ({ src, alt, isEven }: SpaceVisualProps) => {
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
         </div>
       </div>
     </div>
@@ -65,8 +65,8 @@ export default function DeepSpace() {
     {
       id: 'nebulae',
       title: 'سحابی‌ها',
-      subtitle: 'مهدکودک‌ها و زایشگاه‌های ستاره‌ای',
-      desc: 'سحابی‌ها ابرهای عظیمی از غبار، گاز هیدروژن و هلیوم هستند. این تصویر بی‌نظیر (صخره‌های کیهانی در سحابی کارینا) که با تلسکوپ فضایی جیمز وب ثبت شده، زایشگاه‌هایی را نشان می‌دهد که ستارگان جدید در میان امواج متلاطم غبار متولد می‌شوند.',
+      subtitle: 'مهد ستارگان و زایش کیهانی',
+      desc: 'سحابی‌ها ابرهای عظیمی از غبار، گاز هیدروژن و هلیوم هستند. این تصویر بی‌نظیر (صخره‌های کیهانی در سحابی کارینا) که با تلسکوپ فضایی جیمز وب ثبت شده، مناطقی شکوهمند را نشان می‌دهد که در دل آن‌ها نسل‌های جدید ستارگان متولد می‌شوند.',
       image: `${BASE}textures/nebula.webp`,
       stats: [
         { label: 'فاصله از زمین', value: '۷,۵۰۰ سال نوری' },
@@ -85,12 +85,11 @@ export default function DeepSpace() {
         { label: 'چگالی ماده', value: 'میلیاردها تن در سانتی‌متر مکعب' },
         { label: 'میدان مغناطیسی', value: 'تریلیون برابر میدان زمین' },
       ],
-    }
+    },
   ];
 
   return (
     <div className="pb-32 overflow-hidden">
-      {/* Header */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center border-b border-white/5">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -107,26 +106,32 @@ export default function DeepSpace() {
         </motion.div>
       </section>
 
-      {/* Feature Sections */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-32">
         {sections.map((section, idx) => {
           const isEven = idx % 2 === 0;
           return (
-            <div key={section.id} className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center`}>
+            <div 
+              key={section.id} 
+              className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center`}
+            >
               <motion.div 
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
-                className="flex-1 w-full lg:w-[50%]"
+                className="flex-1 w-full lg:w-1/2"
               >
-                <SpaceVisual src={section.image} alt={`تصویر نجومی ${section.title} - ${section.subtitle}`} isEven={isEven} />
+                <SpaceVisual 
+                  src={section.image} 
+                  alt={`تصویر نجومی ${section.title} - ${section.subtitle}`} 
+                  isEven={isEven} 
+                />
               </motion.div>
               
               <motion.div 
                 initial={{ opacity: 0, x: isEven ? -40 : 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
                 className="flex-1 space-y-6 text-center lg:text-right"
               >
@@ -136,15 +141,17 @@ export default function DeepSpace() {
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
                   {section.title}
                 </h2>
-                <div className="w-12 h-1 bg-white/20 rounded-full mx-auto lg:ml-0 lg:mr-auto my-6"></div>
+                <div className="w-12 h-1 bg-white/20 rounded-full mx-auto lg:mr-0 lg:ml-auto my-6" />
                 <p className="text-base md:text-lg text-zinc-400 leading-relaxed font-light mb-6">
                   {section.desc}
                 </p>
 
-                {/* Scientific Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5">
-                  {section.stats.map((stat, sIdx) => (
-                    <div key={sIdx} className="bg-white/5 border border-white/5 rounded-2xl p-4 text-center">
+                  {section.stats.map((stat) => (
+                    <div 
+                      key={stat.label} 
+                      className="bg-zinc-950 border border-white/10 hover:border-white/20 transition-colors rounded-2xl p-4 text-center"
+                    >
                       <div className="text-xs text-zinc-500 mb-1">{stat.label}</div>
                       <div className="text-sm font-bold text-white">{stat.value}</div>
                     </div>
@@ -156,7 +163,6 @@ export default function DeepSpace() {
         })}
       </section>
 
-      {/* Return Navigation */}
       <section className="py-20 border-t border-white/5 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -170,14 +176,15 @@ export default function DeepSpace() {
               to="/"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-medium hover:scale-105 active:scale-95 transition-transform"
             >
+              <ArrowRight className="w-4 h-4" />
               <span>بازگشت به صفحه اصلی</span>
-              <ArrowLeft className="w-4 h-4" />
             </Link>
             <Link 
               to="/solar-system"
-              className="px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
             >
-              کاوش منظومه شمسی
+              <span>کاوش منظومه شمسی</span>
+              <ArrowLeft className="w-4 h-4" />
             </Link>
           </div>
         </motion.div>

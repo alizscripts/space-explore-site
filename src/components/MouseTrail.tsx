@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Star {
   x: number;
@@ -16,7 +16,6 @@ export default function MouseTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Respect user preference for reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
@@ -33,54 +32,51 @@ export default function MouseTrail() {
     let clientMouseX = -10000;
     let clientMouseY = -10000;
 
-    let canvasWidth = window.innerWidth;
-    let canvasHeight = window.innerHeight;
+    let viewWidth = window.innerWidth;
+    let viewHeight = window.innerHeight;
+    let lastScrollY = window.scrollY;
 
     const initStars = () => {
       stars = [];
-      const totalDocHeight = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight,
-        window.innerHeight * 2.5
-      );
-
-      const isMobile = window.innerWidth < 768;
-      const starDensity = isMobile ? 24000 : 12000;
-      const maxStars = isMobile ? 250 : 600;
-      const numStars = Math.min(
-        Math.floor((canvasWidth * totalDocHeight) / starDensity),
-        maxStars
-      );
+      const isMobile = viewWidth < 768;
+      const numStars = isMobile ? 110 : 220;
 
       for (let i = 0; i < numStars; i++) {
-        const x = Math.random() * canvasWidth;
-        const y = Math.random() * totalDocHeight;
+        const x = Math.random() * viewWidth;
+        const y = Math.random() * viewHeight;
         stars.push({
           x,
           y,
           baseX: x,
           baseY: y,
-          size: Math.random() * 1.3 + 0.6,
-          color: `hsl(${200 + Math.random() * 55}, ${75 + Math.random() * 25}%, ${70 + Math.random() * 30}%)`,
+          size: Math.random() * 1.4 + 0.6,
+          color: `hsl(${200 + Math.random() * 55}, ${75 + Math.random() * 25}%, ${75 + Math.random() * 25}%)`,
           vx: 0,
           vy: 0,
-          alpha: 0.35 + Math.random() * 0.45,
+          alpha: 0.35 + Math.random() * 0.5,
         });
       }
     };
 
-    let resizeTimeout: ReturnType<typeof setTimeout>;
     const resize = () => {
-      canvasWidth = window.innerWidth;
-      canvasHeight = window.innerHeight;
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
+      viewWidth = window.innerWidth;
+      viewHeight = window.innerHeight;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(viewWidth * dpr);
+      canvas.height = Math.floor(viewHeight * dpr);
+      canvas.style.width = `${viewWidth}px`;
+      canvas.style.height = `${viewHeight}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
       initStars();
     };
 
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resize, 150);
+      resizeTimeout = setTimeout(resize, 100);
     };
 
     window.addEventListener('resize', handleResize);
@@ -117,62 +113,58 @@ export default function MouseTrail() {
     const pullRadiusSq = pullRadius * pullRadius;
 
     const animate = () => {
-      const scrollY = window.scrollY;
-      const viewHeight = canvasHeight;
-      const viewWidth = canvasWidth;
-
-      const currentMouseDocX = clientMouseX;
-      const currentMouseDocY = clientMouseY >= 0 ? clientMouseY + scrollY : -10000;
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
 
       ctx.clearRect(0, 0, viewWidth, viewHeight);
-
-      const buffer = 100;
-      const minY = scrollY - buffer;
-      const maxY = scrollY + viewHeight + buffer;
 
       for (let i = 0; i < stars.length; i++) {
         const star = stars[i];
 
-        const isVisible = star.y >= minY && star.y <= maxY;
+        if (scrollDelta !== 0) {
+          star.y -= scrollDelta * 0.35;
+          star.baseY -= scrollDelta * 0.35;
 
-        const dx = currentMouseDocX - star.x;
-        const dy = currentMouseDocY - star.y;
+          if (star.y < -30) {
+            star.y += viewHeight + 60;
+            star.baseY += viewHeight + 60;
+          } else if (star.y > viewHeight + 30) {
+            star.y -= viewHeight + 60;
+            star.baseY -= viewHeight + 60;
+          }
+        }
+
+        const dx = clientMouseX - star.x;
+        const dy = clientMouseY - star.y;
         const distSq = dx * dx + dy * dy;
 
-        // Optimization: check squared distance before costly sqrt
         if (distSq < pullRadiusSq) {
           const dist = Math.sqrt(distSq);
           const force = (pullRadius - dist) / pullRadius;
           const easeForce = force * force;
-          star.vx += dx * easeForce * 0.008;
-          star.vy += dy * easeForce * 0.008;
+          star.vx += dx * easeForce * 0.012;
+          star.vy += dy * easeForce * 0.012;
         } else {
           const dxBase = star.baseX - star.x;
           const dyBase = star.baseY - star.y;
-          star.vx += dxBase * 0.035;
-          star.vy += dyBase * 0.035;
+          star.vx += dxBase * 0.04;
+          star.vy += dyBase * 0.04;
         }
 
-        star.vx *= 0.88;
-        star.vy *= 0.88;
+        star.vx *= 0.86;
+        star.vy *= 0.86;
 
         star.x += star.vx;
         star.y += star.vy;
 
-        if (isVisible) {
-          const screenX = Math.round(star.x);
-          const screenY = Math.round(star.y - scrollY);
+        const isExcited = (star.vx * star.vx + star.vy * star.vy) > 0.08;
 
-          // Fast rendering without costly shadowBlur filter
-          const speedSq = star.vx * star.vx + star.vy * star.vy;
-          const isExcited = speedSq > 0.09;
-
-          ctx.beginPath();
-          ctx.arc(screenX, screenY, isExcited ? star.size * 1.5 : star.size, 0, Math.PI * 2);
-          ctx.fillStyle = star.color;
-          ctx.globalAlpha = isExcited ? 1 : star.alpha;
-          ctx.fill();
-        }
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, isExcited ? star.size * 1.5 : star.size, 0, Math.PI * 2);
+        ctx.fillStyle = star.color;
+        ctx.globalAlpha = isExcited ? 1 : star.alpha;
+        ctx.fill();
       }
 
       ctx.globalAlpha = 1;
@@ -196,7 +188,7 @@ export default function MouseTrail() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0"
     />
   );
 }

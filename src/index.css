@@ -1,20 +1,56 @@
 @import "tailwindcss";
 
+:root {
+  --font-sans: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
 @layer base {
+  html,
   body {
-    font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans);
     background-color: #000000;
     color: #ffffff;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
+  ::selection {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a #000000;
 }
 
 .stars-bg {
   background-image: 
-    radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 90px 40px, #ddd, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+    radial-gradient(1px 1px at 20px 30px, #eeeeee, transparent),
+    radial-gradient(1px 1px at 40px 70px, #ffffff, transparent),
+    radial-gradient(2px 2px at 90px 40px, #dddddd, transparent),
+    radial-gradient(1px 1px at 160px 120px, #ffffff, transparent);
   background-repeat: repeat;
   background-size: 200px 200px;
 }
