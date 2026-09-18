@@ -41,7 +41,7 @@ src/
 
 public/
 └── textures/      # Planetary textures and visual assets
-
+```
 ## 💻 Run Locally
 
 ```bash
