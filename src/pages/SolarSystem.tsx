@@ -21,16 +21,16 @@ const PLANET_MOONS: Record<string, MoonConfig[]> = {
   'زمین': [
     { name: 'ماه', distance: 1.85, size: 0.095, color: '#d4d4d8', speed: 0.45, inclination: [0.25, 0, 0.1] },
   ],
-  'مریخ (بهرام)': [
+  'مریخ': [
     { name: 'فوبوس', distance: 1.65, size: 0.052, color: '#78716c', speed: 0.7, inclination: [0.15, 0, 0.1] },
     { name: 'دیموس', distance: 1.95, size: 0.042, color: '#a8a29e', speed: 0.48, inclination: [-0.2, 0, 0.15] },
   ],
-  'مشتری (برجیس)': [
+  'مشتری': [
     { name: 'آیو', distance: 1.68, size: 0.065, color: '#facc15', speed: 0.75, inclination: [0.1, 0, 0] },
     { name: 'اروپا', distance: 1.92, size: 0.06, color: '#f8fafc', speed: 0.52, inclination: [-0.15, 0, 0.1] },
     { name: 'گانیمید', distance: 2.18, size: 0.095, color: '#94a3b8', speed: 0.35, inclination: [0.25, 0, -0.1] },
   ],
-  'زحل (کیوان)': [
+  'زحل': [
     { name: 'انسلادوس', distance: 2.22, size: 0.048, color: '#ffffff', speed: 0.58, inclination: [-0.15, 0, -0.1] },
     { name: 'تایتان', distance: 2.42, size: 0.1, color: '#f59e0b', speed: 0.32, inclination: [0.3, 0, 0.1] },
   ],
@@ -218,7 +218,7 @@ const PlanetVisual = ({ planet }: { planet: PlanetData }) => {
 export default function SolarSystem() {
   const planets: PlanetData[] = [
     {
-      name: 'عطارد (تیر)',
+      name: 'عطارد',
       type: 'سیاره سنگی',
       desc: 'نزدیک‌ترین و کوچک‌ترین سیاره به خورشید. سطحی پر از دهانه‌های برخوردی شبیه به ماه دارد و هیچ اتمسفر پایداری برای حفظ گرما ندارد.',
       baseColor: '#71717a',
@@ -227,7 +227,7 @@ export default function SolarSystem() {
       stats: { distance: '۵۸ میلیون', year: '۸۸ روز', moons: '۰' },
     },
     {
-      name: 'زهره (ناهید)',
+      name: 'زهره',
       type: 'سیاره سنگی',
       desc: 'با اتمسفری ضخیم از دی‌اکسید کربن که اثر گلخانه‌ای شدیدی ایجاد می‌کند، داغ‌ترین سیاره منظومه شمسی است.',
       baseColor: '#b45309',
@@ -245,7 +245,7 @@ export default function SolarSystem() {
       stats: { distance: '۱۵۰ میلیون', year: '۳۶۵.۲ روز', moons: '۱' },
     },
     {
-      name: 'مریخ (بهرام)',
+      name: 'مریخ',
       type: 'سیاره سنگی',
       desc: 'سیاره‌ای سرد و بیابانی با جوی رقیق. دارای بزرگترین آتشفشان و عمیق‌ترین دره‌های کشف شده در منظومه شمسی.',
       baseColor: '#b91c1c',
@@ -254,7 +254,7 @@ export default function SolarSystem() {
       stats: { distance: '۲۲۸ میلیون', year: '۶۸۷ روز', moons: '۲' },
     },
     {
-      name: 'مشتری (برجیس)',
+      name: 'مشتری',
       type: 'غول گازی عظیم',
       desc: 'پادشاه سیارات منظومه شمسی. جرمی بیش از دو برابر تمام سیارات دیگر روی هم دارد و طوفان‌های عظیمی در آن در جریان است.',
       baseColor: '#9a3412',
@@ -263,7 +263,7 @@ export default function SolarSystem() {
       stats: { distance: '۷۷۸ میلیون', year: '۱۱.۸ سال', moons: '۹۵' },
     },
     {
-      name: 'زحل (کیوان)',
+      name: 'زحل',
       type: 'غول گازی حلقه‌دار',
       desc: 'نگین منظومه شمسی که به خاطر حلقه‌های گسترده و درخشانش که از میلیاردها قطعه یخ و سنگ تشکیل شده‌اند، مشهور است.',
       baseColor: '#854d0e',
