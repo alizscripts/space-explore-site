@@ -1,0 +1,222 @@
+{
+  "language": "فارسی",
+  "nav": {
+    "home": "Introduction",
+    "solarSystem": "Solar System",
+    "deepSpace": "Deep Space"
+  },
+  "layout": {
+    "brand": "Space Explore",
+    "homeAria": "Space Explore home page",
+    "navAria": "Main navigation",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "footerDescription": "An interactive project exploring the endless wonders of the universe, from nearby planets to the most distant phenomena in space.",
+    "sectionsTitle": "Explore the Site",
+    "newsletterTitle": "Cosmic Newsletter",
+    "newsletterDescription": "Subscribe to receive the latest astronomical images and discoveries.",
+    "newsletterSuccess": "Your email has been successfully registered for the newsletter!",
+    "emailPlaceholder": "Your email...",
+    "emailLabel": "Email address for the newsletter",
+    "subscribe": "Subscribe",
+    "copyright": "All rights reserved for space explorers.",
+    "developedBy": "Developed by"
+  },
+  "home": {
+    "hero": {
+      "titleStart": "The",
+      "titleHighlight": "Infinite",
+      "description": "In a realm where light travels for billions of years to reach our eyes, every star tells a story from the distant past.",
+      "deepButton": "Journey into Deep Space",
+      "solarButton": "Explore the Solar System"
+    },
+    "stats": {
+      "age": {
+        "number": "13.8",
+        "unit": "billion years",
+        "label": "Estimated age of the universe since the Big Bang"
+      },
+      "diameter": {
+        "number": "93",
+        "unit": "billion light-years",
+        "label": "Diameter of the observable universe"
+      },
+      "galaxies": {
+        "number": "2",
+        "unit": "trillion",
+        "label": "Approximate number of galaxies in the universe"
+      }
+    },
+    "structure": {
+      "title": "The Structure of the Universe",
+      "description": "Our universe consists of structures ranging from incredibly small atoms to vast galaxy superclusters. The laws of physics operate in remarkable harmony across all these scales."
+    },
+    "cards": {
+      "darkEnergy": {
+        "title": "Dark Energy",
+        "description": "A mysterious force responsible for the accelerating expansion of the universe, accounting for approximately 68 percent of its total contents."
+      },
+      "exoplanets": {
+        "title": "Exoplanets",
+        "description": "Worlds orbiting stars other than our Sun that might one day reveal the presence of life."
+      },
+      "starNursery": {
+        "title": "Stellar Nurseries",
+        "description": "Vast clouds of gas and dust where gravity gives birth to new stars."
+      },
+      "cosmicWeb": {
+        "title": "The Cosmic Web",
+        "description": "The largest known structure in the universe: enormous filaments of dark matter and galaxies stretching across space, separated by vast cosmic voids."
+      }
+    },
+    "end": {
+      "question": "Are you ready to begin the journey?",
+      "button": "Enter the Solar System"
+    }
+  },
+  "solar": {
+    "title": "Solar System",
+    "intro": "Our home in the vast universe. One central star and eight remarkable planets, each telling a unique story about the formation of our planetary system.",
+    "labels": {
+      "distance": "Distance from the Sun",
+      "year": "One Year (Orbit)",
+      "moons": "Number of Moons",
+      "km": "km"
+    },
+    "endQuestion": "Ready to go further?",
+    "endButton": "Enter Deep Space",
+    "planets": {
+      "mercury": {
+        "name": "Mercury",
+        "type": "Terrestrial Planet",
+        "desc": "The smallest planet and the closest to the Sun. Its surface is covered with impact craters similar to those on the Moon, and it lacks a stable atmosphere that can retain heat.",
+        "distance": "58 million",
+        "year": "88 days",
+        "moons": "0"
+      },
+      "venus": {
+        "name": "Venus",
+        "type": "Terrestrial Planet",
+        "desc": "With a thick carbon dioxide atmosphere that creates an intense greenhouse effect, Venus is the hottest planet in the Solar System.",
+        "distance": "108 million",
+        "year": "225 days",
+        "moons": "0"
+      },
+      "earth": {
+        "name": "Earth",
+        "type": "Habitable Terrestrial Planet",
+        "desc": "Our pale blue dot. It is the only known place in the universe with the right conditions, including liquid water and a suitable atmosphere, for life to evolve.",
+        "distance": "150 million",
+        "year": "365.2 days",
+        "moons": "1"
+      },
+      "mars": {
+        "name": "Mars",
+        "type": "Terrestrial Planet",
+        "desc": "A cold, desert world with a thin atmosphere. Mars is home to the largest volcano and some of the deepest valleys discovered in the Solar System.",
+        "distance": "228 million",
+        "year": "687 days",
+        "moons": "2"
+      },
+      "jupiter": {
+        "name": "Jupiter",
+        "type": "Gas Giant",
+        "desc": "The king of the planets. Jupiter is more than twice as massive as all the other planets combined and is home to enormous, long-lasting storms.",
+        "distance": "778 million",
+        "year": "11.8 years",
+        "moons": "95"
+      },
+      "saturn": {
+        "name": "Saturn",
+        "type": "Ringed Gas Giant",
+        "desc": "The jewel of the Solar System, famous for its extensive and brilliant rings made of billions of fragments of ice and rock.",
+        "distance": "1.4 billion",
+        "year": "29.4 years",
+        "moons": "146"
+      },
+      "uranus": {
+        "name": "Uranus",
+        "type": "Tilted Ice Giant",
+        "desc": "The only planet whose rotational axis is tilted so dramatically that it essentially orbits the Sun on its side. It has an extremely cold atmosphere.",
+        "distance": "2.9 billion",
+        "year": "84 years",
+        "moons": "28"
+      },
+      "neptune": {
+        "name": "Neptune",
+        "type": "Distant Ice Giant",
+        "desc": "The farthest planet from the Sun. It is a dark, cold world with supersonic winds reaching speeds of up to 2,000 kilometers per hour.",
+        "distance": "4.5 billion",
+        "year": "165 years",
+        "moons": "16"
+      }
+    }
+  },
+  "deep": {
+    "title": "Deep Space",
+    "intro": "Beyond the Solar System, in absolute darkness and interstellar cold, extraordinary phenomena challenge our understanding of the laws of physics.",
+    "imageAlt": "Astronomical image of {{title}} - {{subtitle}}",
+    "sections": {
+      "black-holes": {
+        "title": "Black Holes",
+        "subtitle": "Gravitational Giants and the Event Horizon",
+        "desc": "Black holes are regions of spacetime where gravity is so powerful that nothing, not even light, can escape. This remarkable image shows the first captured image of the event horizon of the supermassive black hole at the center of galaxy M87, observed by the Event Horizon Telescope (EHT).",
+        "stats": [
+          {
+            "label": "Distance from Earth",
+            "value": "55 million light-years"
+          },
+          {
+            "label": "Estimated Mass",
+            "value": "6.5 billion solar masses"
+          },
+          {
+            "label": "Observation Method",
+            "value": "EHT Telescope Network"
+          }
+        ]
+      },
+      "nebulae": {
+        "title": "Nebulae",
+        "subtitle": "Stellar Nurseries and Cosmic Birth",
+        "desc": "Nebulae are enormous clouds of dust, hydrogen, and helium gas. This remarkable image of the Cosmic Cliffs in the Carina Nebula, captured by the James Webb Space Telescope, reveals magnificent regions where new generations of stars are born.",
+        "stats": [
+          {
+            "label": "Distance from Earth",
+            "value": "7,500 light-years"
+          },
+          {
+            "label": "Extent",
+            "value": "More than 300 light-years"
+          },
+          {
+            "label": "Observing Telescope",
+            "value": "James Webb (JWST)"
+          }
+        ]
+      },
+      "pulsars": {
+        "title": "Pulsars",
+        "subtitle": "The Rotating Lighthouses of the Universe",
+        "desc": "Pulsars are extremely dense neutron stars that rotate at extraordinary speeds. They emit powerful streams of energetic particles and electromagnetic radiation from their magnetic poles with remarkable precision, much like atomic clocks.",
+        "stats": [
+          {
+            "label": "Rotation Speed",
+            "value": "Up to hundreds of rotations per second"
+          },
+          {
+            "label": "Matter Density",
+            "value": "Billions of tons per cubic centimeter"
+          },
+          {
+            "label": "Magnetic Field",
+            "value": "Trillions of times Earth's magnetic field"
+          }
+        ]
+      }
+    },
+    "endTitle": "End of the Deep Space Journey",
+    "homeButton": "Return to Home",
+    "solarButton": "Explore the Solar System"
+  }
+}

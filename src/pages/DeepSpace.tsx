@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -49,6 +50,7 @@ interface DeepSpaceSection {
 }
 
 export default function DeepSpace() {
+  const { t } = useTranslation();
   const sections: DeepSpaceSection[] = [
     {
       id: 'black-holes',
@@ -97,11 +99,10 @@ export default function DeepSpace() {
           className="max-w-3xl mx-auto"
         >
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter">
-            فضای عمیق
+            {t('deep.title')}
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
-            فراتر از منظومه شمسی، در تاریکی مطلق و سرمای بین‌ستاره‌ای، 
-            پدیده‌هایی بی‌نهایت شکوهمند قوانین فیزیک را به چالش می‌کشند.
+            {t('deep.intro')}
           </p>
         </motion.div>
       </section>
@@ -123,7 +124,10 @@ export default function DeepSpace() {
               >
                 <SpaceVisual 
                   src={section.image} 
-                  alt={`تصویر نجومی ${section.title} - ${section.subtitle}`} 
+                  alt={t('deep.imageAlt', {
+                    title: t(`deep.sections.${section.id}.title`),
+                    subtitle: t(`deep.sections.${section.id}.subtitle`),
+                  })}
                   isEven={isEven} 
                 />
               </motion.div>
@@ -136,24 +140,29 @@ export default function DeepSpace() {
                 className="flex-1 space-y-6 text-center lg:text-right"
               >
                 <div className="text-zinc-500 text-sm font-medium">
-                  {section.subtitle}
+                  {t(`deep.sections.${section.id}.subtitle`)}
                 </div>
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                  {section.title}
+                  {t(`deep.sections.${section.id}.title`)}
                 </h2>
                 <div className="w-12 h-1 bg-white/20 rounded-full mx-auto lg:mr-0 lg:ml-auto my-6" />
                 <p className="text-base md:text-lg text-zinc-400 leading-relaxed font-light mb-6">
-                  {section.desc}
+                  {t(`deep.sections.${section.id}.desc`)}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5">
-                  {section.stats.map((stat) => (
+                  {section.stats.map((stat, statIdx) => (
                     <div 
                       key={stat.label} 
                       className="bg-zinc-950 border border-white/10 hover:border-white/20 transition-colors rounded-2xl p-4 text-center"
                     >
-                      <div className="text-xs text-zinc-500 mb-1">{stat.label}</div>
-                      <div className="text-sm font-bold text-white">{stat.value}</div>
+                      <div className="text-xs text-zinc-500 mb-1">
+                        {t(`deep.sections.${section.id}.stats.${statIdx}.label`)}
+                      </div>
+
+                      <div className="text-sm font-bold text-white">
+                        {t(`deep.sections.${section.id}.stats.${statIdx}.value`)}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -170,20 +179,20 @@ export default function DeepSpace() {
           viewport={{ once: true }}
           className="max-w-xl mx-auto px-4"
         >
-          <p className="text-zinc-500 mb-6 font-light">پایان گشت و گذار در اعماق فضا</p>
+          <p className="text-zinc-500 mb-6 font-light">{t('deep.endTitle')}</p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <Link 
               to="/"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-medium hover:scale-105 active:scale-95 transition-transform"
             >
               <ArrowRight className="w-4 h-4" />
-              <span>بازگشت به صفحه اصلی</span>
+              <span>{t('deep.homeButton')}</span>
             </Link>
             <Link 
               to="/solar-system"
               className="inline-flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
             >
-              <span>کاوش منظومه شمسی</span>
+              <span>{t('deep.solarButton')}</span>
               <ArrowLeft className="w-4 h-4" />
             </Link>
           </div>

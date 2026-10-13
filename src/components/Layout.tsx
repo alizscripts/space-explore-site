@@ -3,8 +3,11 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Rocket, Orbit, Sparkles, Menu, X, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import MouseTrail from './MouseTrail';
+import { useTranslation } from 'react-i18next';
 
 export default function Layout() {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.resolvedLanguage ?? 'fa';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -29,7 +32,19 @@ export default function Layout() {
       return () => clearTimeout(timer);
     }
   }, [isSubscribed]);
+  useEffect(() => {
+    const language = i18n.resolvedLanguage === 'en' ? 'en' : 'fa';
 
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'fa' ? 'rtl' : 'ltr';
+
+    localStorage.setItem('language', language);
+  }, [i18n.resolvedLanguage]);
+
+  const toggleLanguage = () => {
+    const newLanguage = currentLanguage === 'fa' ? 'en' : 'fa';
+    void i18n.changeLanguage(newLanguage);
+  };
   const handleNewsletterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newsletterEmail.trim()) {
@@ -49,9 +64,9 @@ export default function Layout() {
   };
 
   const navLinks = [
-    { path: '/', label: 'مقدمه', icon: Rocket },
-    { path: '/solar-system', label: 'منظومه شمسی', icon: Orbit },
-    { path: '/deep-space', label: 'فضای عمیق', icon: Sparkles },
+    { path: '/', label: t('nav.home'), icon: Rocket },
+    { path: '/solar-system', label: t('nav.solarSystem'), icon: Orbit },
+    { path: '/deep-space', label: t('nav.deepSpace'), icon: Sparkles },
   ];
 
   return (
@@ -70,15 +85,15 @@ export default function Layout() {
             to="/" 
             onMouseEnter={() => handlePreload('/')}
             className="flex items-center gap-3 group" 
-            aria-label="صفحه اصلی شگفتی‌های فضا"
+            aria-label={t('layout.homeAria')}
           >
             <div className="bg-white/10 p-2 rounded-full group-hover:bg-white group-hover:text-black transition-colors">
               <Rocket className="w-4 h-4" />
             </div>
-            <span className="font-bold tracking-tight text-lg">شگفتی‌های فضا</span>
+            <span className="font-bold tracking-tight text-lg">{t('layout.brand')}</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1" aria-label="ناوبری اصلی">
+          <nav className="hidden md:flex items-center gap-1" aria-label={t('layout.navAria')}>
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
@@ -105,12 +120,20 @@ export default function Layout() {
               );
             })}
           </nav>
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="px-3 py-2 text-xs font-semibold rounded-full border border-white/15 text-zinc-300 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label={currentLanguage === 'fa' ? 'Switch to English' : 'تغییر زبان به فارسی'}
+>
+            {currentLanguage === 'fa' ? 'English' : 'فارسی'}
+          </button>
 
           <button 
             type="button"
             className="md:hidden p-2 text-zinc-400 hover:text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? 'بستن منو' : 'باز کردن منو'}
+            aria-label={isMobileMenuOpen ? t('layout.menuClose') : t('layout.menuOpen')}
             aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -161,17 +184,17 @@ export default function Layout() {
                 <div className="bg-white/10 p-2 rounded-full">
                   <Rocket className="w-5 h-5" />
                 </div>
-                <span className="font-bold text-xl">شگفتی‌های فضا</span>
+                 <span className="font-bold text-xl">{t('layout.brand')}</span>
               </Link>
               <p className="text-zinc-400 text-sm leading-relaxed max-w-sm font-light">
-                پروژه‌ای تعاملی برای کاوش در شگفتی‌های بی‌پایان کیهان، از نزدیک‌ترین سیارات تا دوردست‌ترین پدیده‌های فضا.
+                {t('layout.footerDescription')}
               </p>
             </div>
             
             <div>
               <h4 className="text-white font-medium mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                بخش‌های سایت
+                {t('layout.sectionsTitle')}
               </h4>
               <ul className="space-y-3">
                 {navLinks.map((link) => (
@@ -188,15 +211,15 @@ export default function Layout() {
             <div>
               <h4 className="text-white font-medium mb-4 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                خبرنامه کیهانی
+                {t('layout.newsletterTitle')}
               </h4>
               <p className="text-zinc-400 text-sm mb-4 leading-relaxed font-light">
-                برای دریافت آخرین تصاویر و کشفیات نجومی عضو شوید.
+                {t('layout.newsletterDescription')}
               </p>
               {isSubscribed ? (
                 <div className="flex items-center gap-2 text-emerald-400 text-sm bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
                   <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-                  <span>ایمیل شما با موفقیت در خبرنامه ثبت شد!</span>
+                  <span>{t('layout.newsletterSuccess')}</span>
                 </div>
               ) : (
                 <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
@@ -204,8 +227,8 @@ export default function Layout() {
                     type="email" 
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="ایمیل شما..." 
-                    aria-label="آدرس ایمیل برای خبرنامه"
+                    placeholder={t('layout.emailPlaceholder')}
+                    aria-label={t('layout.emailLabel')}
                     required
                     className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-white/30 w-full transition-colors"
                   />
@@ -213,7 +236,7 @@ export default function Layout() {
                     type="submit" 
                     className="bg-white text-black px-4 py-2 rounded-xl text-sm font-bold hover:bg-zinc-200 transition-colors flex-shrink-0"
                   >
-                    ثبت
+                    {t('layout.subscribe')}
                   </button>
                 </form>
               )}
@@ -221,9 +244,9 @@ export default function Layout() {
           </div>
           
           <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-zinc-500">
-            <p>© {new Date().getFullYear()} تمامی حقوق برای کاوشگران فضا محفوظ است.</p>
+            <p>© {new Date().getFullYear()} {t('layout.copyright')}</p>
             <p className="flex items-center gap-1">
-              توسعه داده شده توسط
+              {t('layout.developedBy')}
               <a href="https://github.com/alizscripts" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-white transition-colors underline">
                 Aliz_scripts
               </a>

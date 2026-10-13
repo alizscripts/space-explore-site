@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import { Sphere, Ring, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
+import { useTranslation } from 'react-i18next';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -94,6 +95,7 @@ const TextureSphere = ({ textureUrl, isGasGiant, args }: TextureSphereProps) => 
 };
 
 interface PlanetData {
+  id: string;
   name: string;
   type: string;
   desc: string;
@@ -216,8 +218,10 @@ const PlanetVisual = ({ planet }: { planet: PlanetData }) => {
 };
 
 export default function SolarSystem() {
+  const { t } = useTranslation();
   const planets: PlanetData[] = [
     {
+      id: 'mercury',
       name: 'عطارد',
       type: 'سیاره سنگی',
       desc: 'نزدیک‌ترین و کوچک‌ترین سیاره به خورشید. سطحی پر از دهانه‌های برخوردی شبیه به ماه دارد و هیچ اتمسفر پایداری برای حفظ گرما ندارد.',
@@ -227,6 +231,7 @@ export default function SolarSystem() {
       stats: { distance: '۵۸ میلیون', year: '۸۸ روز', moons: '۰' },
     },
     {
+      id: 'venus',
       name: 'زهره',
       type: 'سیاره سنگی',
       desc: 'با اتمسفری ضخیم از دی‌اکسید کربن که اثر گلخانه‌ای شدیدی ایجاد می‌کند، داغ‌ترین سیاره منظومه شمسی است.',
@@ -236,6 +241,7 @@ export default function SolarSystem() {
       stats: { distance: '۱۰۸ میلیون', year: '۲۲۵ روز', moons: '۰' },
     },
     {
+      id: 'earth' ,
       name: 'زمین',
       type: 'سیاره سنگی زیست‌پذیر',
       desc: 'نقطه آبی کمرنگ ما. تنها مکان شناخته شده در جهان که شرایط ایده‌آل (آب مایع و جو مناسب) برای تکامل حیات را داراست.',
@@ -245,6 +251,7 @@ export default function SolarSystem() {
       stats: { distance: '۱۵۰ میلیون', year: '۳۶۵.۲ روز', moons: '۱' },
     },
     {
+      id : 'mars' ,
       name: 'مریخ',
       type: 'سیاره سنگی',
       desc: 'سیاره‌ای سرد و بیابانی با جوی رقیق. دارای بزرگترین آتشفشان و عمیق‌ترین دره‌های کشف شده در منظومه شمسی.',
@@ -254,6 +261,7 @@ export default function SolarSystem() {
       stats: { distance: '۲۲۸ میلیون', year: '۶۸۷ روز', moons: '۲' },
     },
     {
+      id : 'jupiter' ,
       name: 'مشتری',
       type: 'غول گازی عظیم',
       desc: 'پادشاه سیارات منظومه شمسی. جرمی بیش از دو برابر تمام سیارات دیگر روی هم دارد و طوفان‌های عظیمی در آن در جریان است.',
@@ -263,6 +271,7 @@ export default function SolarSystem() {
       stats: { distance: '۷۷۸ میلیون', year: '۱۱.۸ سال', moons: '۹۵' },
     },
     {
+      id : 'saturn' ,
       name: 'زحل',
       type: 'غول گازی حلقه‌دار',
       desc: 'نگین منظومه شمسی که به خاطر حلقه‌های گسترده و درخشانش که از میلیاردها قطعه یخ و سنگ تشکیل شده‌اند، مشهور است.',
@@ -272,6 +281,7 @@ export default function SolarSystem() {
       stats: { distance: '۱.۴ میلیارد', year: '۲۹.۴ سال', moons: '۱۴۶' },
     },
     {
+      id : 'uranus' , 
       name: 'اورانوس',
       type: 'غول یخی کج‌محور',
       desc: 'تنها سیاره‌ای که محور چرخش آن به شدت کج شده و تقریباً روی پهلو به دور خورشید می‌گردد. اتمسفری بسیار سرد دارد.',
@@ -281,6 +291,7 @@ export default function SolarSystem() {
       stats: { distance: '۲.۹ میلیارد', year: '۸۴ سال', moons: '۲۸' },
     },
     {
+      id : 'neptune' ,
       name: 'نپتون',
       type: 'غول یخی دوردست',
       desc: 'دورترین سیاره منظومه شمسی. جهانی تاریک، سرد و با بادهای مافوق صوت که سرعت آن‌ها به ۲۰۰۰ کیلومتر در ساعت می‌رسد.',
@@ -300,10 +311,10 @@ export default function SolarSystem() {
           className="max-w-3xl"
         >
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter">
-            منظومه شمسی
+            {t('solar.title')}
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
-            خانه ما در گستره کیهان. یک ستاره مرکزی و هشت سیاره شگفت‌انگیز که هر کدام داستانی منحصر‌به‌فرد از پیدایش منظومه ما را روایت می‌کنند.
+            {t('solar.intro')}
           </p>
         </motion.div>
       </section>
@@ -324,9 +335,9 @@ export default function SolarSystem() {
               <div className="flex-1 w-full text-center md:text-right">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{planet.name}</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{t(`solar.planets.${planet.id}.name`)}</h2>
                     <span className="inline-block text-xs px-3 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/5">
-                      {planet.type}
+                      {t(`solar.planets.${planet.id}.type`)}
                     </span>
                   </div>
                   
@@ -336,26 +347,26 @@ export default function SolarSystem() {
                 </div>
                 
                 <p className="text-zinc-400 font-light leading-relaxed text-base md:text-lg mb-8">
-                  {planet.desc}
+                  {t(`solar.planets.${planet.id}.desc`)}
                 </p>
 
                 <div className="grid grid-cols-3 gap-4 border-t border-white/5 pt-6">
                   <div>
-                    <div className="text-xs text-zinc-500 mb-1">فاصله از خورشید</div>
+                    <div className="text-xs text-zinc-500 mb-1">{t('solar.labels.distance')}</div>
                     <div className="text-lg md:text-xl font-bold text-white">
-                      {planet.stats.distance} <span className="text-xs font-normal text-zinc-500">کیلومتر</span>
+                      {t(`solar.planets.${planet.id}.distance`)} <span className="text-xs font-normal text-zinc-500">{t('solar.labels.km')}</span>
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-zinc-500 mb-1">یک سال (مدار)</div>
+                    <div className="text-xs text-zinc-500 mb-1">{t('solar.labels.year')}</div>
                     <div className="text-lg md:text-xl font-bold text-white">
-                      {planet.stats.year}
+                      {t(`solar.planets.${planet.id}.year`)}
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-zinc-500 mb-1">تعداد قمرها</div>
+                    <div className="text-xs text-zinc-500 mb-1">{t('solar.labels.moons')}</div>
                     <div className="text-lg md:text-xl font-bold text-white">
-                      {planet.stats.moons}
+                      {t(`solar.planets.${planet.id}.moons`)}
                     </div>
                   </div>
                 </div>
@@ -371,9 +382,9 @@ export default function SolarSystem() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-28 text-center"
         >
-          <p className="text-zinc-500 mb-6 font-light">می‌خواهید فراتر بروید؟</p>
+          <p className="text-zinc-500 mb-6 font-light">{t('solar.endQuestion')}</p>
           <Link to="/deep-space" className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-medium hover:scale-105 active:scale-95 transition-transform">
-            <span>ورود به فضای عمیق</span>
+            <span>{t('solar.endButton')}</span>
             <ArrowLeft className="w-4 h-4" />
           </Link>
         </motion.div>

@@ -2,6 +2,7 @@ import { useRef, type MouseEvent, type ReactNode } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Globe, Star, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface SpotlightCardProps {
   className?: string;
@@ -39,6 +40,7 @@ function SpotlightCard({ className = '', delay = 0, children }: SpotlightCardPro
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -49,9 +51,24 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const stats = [
-    { num: '۱۳.۸', unit: 'میلیارد سال', label: 'عمر تخمینی کیهان از زمان بیگ بنگ' },
-    { num: '۹۳', unit: 'میلیارد سال نوری', label: 'قطر جهان قابل مشاهده برای انسان' },
-    { num: '۲', unit: 'تریلیون', label: 'تعداد تقریبی کهکشان‌ها در پهنه هستی' },
+    {
+      key: 'age',
+      num: t('home.stats.age.number'),
+      unit: t('home.stats.age.unit'),
+      label: t('home.stats.age.label'),
+    },
+    {
+      key: 'diameter',
+      num: t('home.stats.diameter.number'),
+      unit: t('home.stats.diameter.unit'),
+      label: t('home.stats.diameter.label'),
+    },
+    {
+      key: 'galaxies',
+      num: t('home.stats.galaxies.number'),
+      unit: t('home.stats.galaxies.unit'),
+      label: t('home.stats.galaxies.label'),
+    },
   ];
 
   return (
@@ -67,9 +84,9 @@ export default function Home() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <h1 className="text-7xl sm:text-8xl md:text-9xl font-black text-white tracking-tighter mb-6 leading-tight">
-              جهانِ <br className="md:hidden" />
+              {t('home.hero.titleStart')} <br className="md:hidden" />
               <span className="inline-block pb-2 text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-400 to-zinc-800">
-                بی‌کران
+                {t('home.hero.titleHighlight')}
               </span>
             </h1>
           </motion.div>
@@ -80,8 +97,7 @@ export default function Home() {
             transition={{ delay: 0.4, duration: 1 }}
             className="text-lg md:text-2xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed mb-12"
           >
-            در قلمرویی که نور برای رسیدن به چشم‌های ما میلیاردها سال در سفر است، 
-            هر ستاره داستانی از گذشته‌های دور را روایت می‌کند.
+           {t('home.hero.description')}
           </motion.p>
           
           <motion.div 
@@ -95,14 +111,14 @@ export default function Home() {
               className="group relative px-8 py-4 bg-white text-black rounded-full font-medium overflow-hidden flex items-center gap-3 transition-transform hover:scale-105 active:scale-95"
             >
               <div className="absolute inset-0 bg-zinc-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-              <span className="relative z-10">سفر به اعماق فضا</span>
+              <span className="relative z-10">{t('home.hero.deepButton')}</span>
               <ArrowLeft className="w-4 h-4 relative z-10" />
             </Link>
             <Link 
               to="/solar-system"
               className="px-8 py-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors flex items-center gap-3"
             >
-              کاوش منظومه شمسی
+              {t('home.hero.solarButton')}
             </Link>
           </motion.div>
         </motion.div>
@@ -113,7 +129,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
             {stats.map((stat, idx) => (
               <motion.div 
-                key={stat.label}
+                key={stat.key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -137,35 +153,34 @@ export default function Home() {
 
       <section className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">ساختار هستی</h2>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6">{t('home.structure.title')}</h2>
           <p className="text-zinc-400 text-lg max-w-2xl font-light leading-relaxed">
-            جهان ما از ساختارهای بی‌نهایت کوچک اتمی تا ابرخوشه‌های کهکشانی تشکیل شده است. 
-            قوانین فیزیک در تمام این مقیاس‌ها با هماهنگی خیره‌کننده‌ای عمل می‌کنند.
+           {t('home.structure.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
           <SpotlightCard className="md:col-span-2">
             <Zap className="w-8 h-8 text-white mb-4" />
-            <h3 className="text-3xl font-bold text-white mb-3">انرژی تاریک</h3>
-            <p className="text-zinc-400 font-light max-w-md">نیروی مرموزی که باعث انبساط شتاب‌دار کیهان می‌شود و حدود ۶۸ درصد از کل محتوای جهان را تشکیل می‌دهد.</p>
+            <h3 className="text-3xl font-bold text-white mb-3">{t('home.cards.darkEnergy.title')}</h3>
+            <p className="text-zinc-400 font-light max-w-md">{t('home.cards.darkEnergy.description')}</p>
           </SpotlightCard>
 
           <SpotlightCard delay={0.15}>
             <Globe className="w-8 h-8 text-white mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-3">سیارات فراخورشیدی</h3>
-            <p className="text-zinc-400 font-light text-sm">جهان‌هایی که به دور ستارگانی غیر از خورشید می‌گردند و شاید میزبان حیات باشند.</p>
+            <h3 className="text-2xl font-bold text-white mb-3">{t('home.cards.exoplanets.title')}</h3>
+            <p className="text-zinc-400 font-light text-sm">{t('home.cards.exoplanets.description')}</p>
           </SpotlightCard>
 
           <SpotlightCard delay={0.25}>
             <Star className="w-8 h-8 text-white mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-3">مهد ستارگان</h3>
-            <p className="text-zinc-400 font-light text-sm">ابرهای عظیم گاز و غبار که در دل آن‌ها گرانش، ستارگان جدید را متولد می‌کند.</p>
+            <h3 className="text-2xl font-bold text-white mb-3">{t('home.cards.starNursery.title')}</h3>
+            <p className="text-zinc-400 font-light text-sm">{t('home.cards.starNursery.description')}</p>
           </SpotlightCard>
 
           <SpotlightCard className="md:col-span-2" delay={0.35}>
-            <h3 className="text-3xl font-bold text-white mb-3">شبکه کیهانی</h3>
-            <p className="text-zinc-400 font-light max-w-2xl">بزرگترین ساختار شناخته شده؛ رشته‌های عظیمی از ماده تاریک و کهکشان‌ها که در سراسر جهان کشیده شده‌اند و فضاهای خالی پهناوری بین آن‌ها قرار دارد.</p>
+            <h3 className="text-3xl font-bold text-white mb-3">{t('home.cards.cosmicWeb.title')}</h3>
+            <p className="text-zinc-400 font-light max-w-2xl">{t('home.cards.cosmicWeb.description')}</p>
           </SpotlightCard>
         </div>
       </section>
@@ -177,14 +192,14 @@ export default function Home() {
           viewport={{ once: true }}
           className="max-w-xl mx-auto px-4"
         >
-          <p className="text-zinc-500 mb-6 font-light">آماده‌اید تا سفر را آغاز کنیم؟</p>
+          <p className="text-zinc-500 mb-6 font-light">{t('home.end.question')}</p>
           <Link 
             to="/solar-system"
             className="group relative inline-flex items-center justify-center px-10 py-5 bg-white text-black rounded-full font-bold overflow-hidden transition-transform hover:scale-105 active:scale-95"
           >
             <div className="absolute inset-0 bg-zinc-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
             <span className="relative z-10 flex items-center gap-3">
-              ورود به منظومه شمسی
+              {t('home.end.button')}
               <ArrowLeft className="w-5 h-5 relative z-10" />
             </span>
           </Link>
